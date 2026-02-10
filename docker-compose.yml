@@ -1,0 +1,9 @@
+services:
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:latest
+    container_name: lavalink
+    ports:
+      - "2333:2333"
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml
+      - ./plugins:/opt/Lavalink/plugins
