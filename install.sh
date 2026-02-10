@@ -1,0 +1,1 @@
+wget -O plugins/youtube-plugin-1.17.0.jar https://github.com/lavalink-devs/youtube-source/releases/download/1.17.0/youtube-plugin-1.17.0.jar 

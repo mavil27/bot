@@ -1,6 +1,7 @@
 # secrets
 config.py
 .env
+plugins/*
 
 # python
 .venv/
