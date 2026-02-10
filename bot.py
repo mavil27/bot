@@ -7,8 +7,13 @@ from discord.ext import commands
 from discord import app_commands
 import wavelink
 
-import config
+import os
 
+LAVALINK_HOST = os.getenv("LAVALINK_HOST")
+LAVALINK_PORT = int(os.getenv("LAVALINK_PORT"))
+LAVALINK_PASSWORD = os.getenv("LAVALINK_PASSWORD")
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+IDLE_TIMEOUT_SEC = int(os.getenv("IDLE_TIMEOUT_SEC", "120"))
 
 # -------------------------
 # 길드별 상태(큐/idle/lock)
@@ -38,7 +43,7 @@ async def schedule_idle_disconnect(player: wavelink.Player, st: GuildMusicState)
 
     async def _idle():
         try:
-            await asyncio.sleep(config.IDLE_TIMEOUT_SEC)
+            await asyncio.sleep(IDLE_TIMEOUT_SEC)
             # 타이머 후에도 재생 없고 큐 비었으면 퇴장
             if (not player.playing) and (not st.queue):
                 await player.disconnect()
@@ -74,8 +79,8 @@ async def on_ready():
             client=bot,
             nodes=[
                 wavelink.Node(
-                    uri=f"http://{config.LAVALINK_HOST}:{config.LAVALINK_PORT}",
-                    password=config.LAVALINK_PASSWORD,
+                    uri=f"http://{LAVALINK_HOST}:{LAVALINK_PORT}",
+                    password=LAVALINK_PASSWORD,
                 )
             ],
         )
@@ -207,7 +212,7 @@ async def stop(interaction: discord.Interaction):
         await schedule_idle_disconnect(player, st)
 
     await interaction.response.send_message(
-        f"⏹️ 중지 & 대기열 초기화. {config.IDLE_TIMEOUT_SEC}초 동안 명령 없으면 자동 퇴장합니다."
+        f"⏹️ 중지 & 대기열 초기화. {IDLE_TIMEOUT_SEC}초 동안 명령 없으면 자동 퇴장합니다."
     )
 
 
@@ -273,4 +278,4 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
                 await player.disconnect()
 
 
-bot.run(config.DISCORD_TOKEN)
+bot.run(DISCORD_TOKEN)

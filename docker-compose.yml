@@ -7,3 +7,15 @@ services:
     volumes:
       - ./application.yml:/opt/Lavalink/application.yml
       - ./plugins:/opt/Lavalink/plugins
+  discord-bot:
+    build: .
+    container_name: discord-bot
+    depends_on:
+      - lavalink
+    environment:
+      - LAVALINK_HOST=lavalink
+      - LAVALINK_PORT=${LAVALINK_PORT}
+      - LAVALINK_PASSWORD=${LAVALINK_PASSWORD}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - IDLE_TIMEOUT_SEC=${IDLE_TIMEOUT_SEC}
+    restart: unless-stopped
